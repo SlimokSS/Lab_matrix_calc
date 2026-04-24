@@ -1,0 +1,21 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-MESSAGES
++EMGRLOG
+xrun.log
+-XLSTIME
+1777013917
+-XLKEEP
+-XLMODE
+./xcelium.d/run.lnx86.18.03.d
+-RUNMODE
+-CDSLIB
+./xcelium.d/run.lnx86.18.03.d/cds.lib
+-HDLVAR
+./xcelium.d/run.lnx86.18.03.d/hdl.var
+-XLNAME
+xrun
+-XLVERSION
+"TOOL:	xrun	18.03-s001"

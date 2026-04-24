@@ -1,0 +1,47 @@
+xrun: 18.03-s001: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
+TOOL:	xrun	18.03-s001: Started on Apr 24, 2026 at 09:58:37 MSK
+xrun
+	-sv
+	rtl/apb_csr.sv
+	tb/apb_driver.sv
+Recompiling... reason: file './tb/apb_driver.sv' is newer than expected.
+	expected: Fri Apr 24 09:51:07 2026
+	actual:   Fri Apr 24 09:56:20 2026
+file: tb/apb_driver.sv
+	module worklib.tb_apb_csr:sv
+		errors: 0, warnings: 0
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		tb_apb_csr
+xmelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.tb_apb_csr:sv <0x00dabb4a>
+			streams:   6, words:  9424
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		              Instances  Unique
+		Modules:              2       2
+		Registers:           21      21
+		Scalar wires:        15       -
+		Vectored wires:       6       -
+		Always blocks:        3       3
+		Initial blocks:       2       2
+		Cont. assignments:    0       2
+		Pseudo assignments:   3       3
+	Writing initial simulation snapshot: worklib.tb_apb_csr:sv
+Loading snapshot worklib.tb_apb_csr:sv .................... Done
+xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+xcelium> source /eda/cadence/XCELIUM1803/tools/xcelium/files/xmsimrc
+xcelium> run
+REG_OP write passed
+REG_OP read passed
+REG_CTRL on passed
+REG_CTRL off passed
+REG_STATUS read passed
+Simulation complete via $finish(1) at time 70 NS + 0
+./tb/apb_driver.sv:134     $finish;
+xcelium> exit
+TOOL:	xrun	18.03-s001: Exiting on Apr 24, 2026 at 09:58:41 MSK  (total: 00:00:04)
