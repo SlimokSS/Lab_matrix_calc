@@ -1,22 +1,21 @@
 xrun: 18.03-s001: (c) Copyright 1995-2018 Cadence Design Systems, Inc.
-TOOL:	xrun	18.03-s001: Started on Apr 24, 2026 at 09:58:37 MSK
+TOOL:	xrun	18.03-s001: Started on Apr 28, 2026 at 10:23:11 MSK
 xrun
 	-sv
-	rtl/apb_csr.sv
 	tb/apb_driver.sv
-Recompiling... reason: file './tb/apb_driver.sv' is newer than expected.
-	expected: Fri Apr 24 09:51:07 2026
-	actual:   Fri Apr 24 09:56:20 2026
 file: tb/apb_driver.sv
 	module worklib.tb_apb_csr:sv
 		errors: 0, warnings: 0
 		Caching library 'worklib' ....... Done
 	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
 	Top level design units:
 		tb_apb_csr
 xmelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
 	Building instance overlay tables: .................... Done
 	Generating native compiled code:
+		worklib.apb_csr:sv <0x0c940eba>
+			streams:   4, words:  1512
 		worklib.tb_apb_csr:sv <0x00dabb4a>
 			streams:   6, words:  9424
 	Building instance specific data structures.
@@ -44,4 +43,4 @@ REG_STATUS read passed
 Simulation complete via $finish(1) at time 70 NS + 0
 ./tb/apb_driver.sv:134     $finish;
 xcelium> exit
-TOOL:	xrun	18.03-s001: Exiting on Apr 24, 2026 at 09:58:41 MSK  (total: 00:00:04)
+TOOL:	xrun	18.03-s001: Exiting on Apr 28, 2026 at 10:23:14 MSK  (total: 00:00:03)

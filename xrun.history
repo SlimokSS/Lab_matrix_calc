@@ -4,3 +4,7 @@ s3(24Apr2026:09:46:24):  xrun -sv rtl/apb_csr.sv tb/apb_driver.sv
 s4(24Apr2026:09:51:22):  xrun -v tb/apt_driver.sv 
 s5(24Apr2026:09:52:00):  xrun -sv rtl/apb_csr.sv tb/apb_driver.sv 
 s6(24Apr2026:09:58:37):  xrun -sv rtl/apb_csr.sv tb/apb_driver.sv 
+s7(28Apr2026:10:20:44):  xrun -V /rtl/apb_csr.sv 
+s8(28Apr2026:10:21:52):  xrun -sv /rtl/apb_csr.sv 
+s9(28Apr2026:10:22:17):  xrun -sv rtl/apb_csr.sv 
+s10(28Apr2026:10:23:12):  xrun -sv tb/apb_driver.sv 

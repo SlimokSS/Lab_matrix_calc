@@ -6,7 +6,6 @@
 ./xcelium.d/run.lnx86.18.03.d
 -RUNMODE
 -sv
-rtl/apb_csr.sv
 tb/apb_driver.sv
 -CDSLIB
 ./xcelium.d/run.lnx86.18.03.d/cdsrun.lib
