@@ -1,129 +1,108 @@
 module tb_mat_addsub;
 
-    localparam N = 2;
-    localparam DATA_W = 4;
+    localparam int N      = 4;
+    localparam int DATA_W = 16;
+    localparam int TESTS   = 100;
 
     logic sub;
     logic signed [DATA_W-1:0] mat_a [N][N];
     logic signed [DATA_W-1:0] mat_b [N][N];
+
     logic signed [DATA_W-1:0] mat_c [N][N];
-    logic signed [DATA_W-1:0] exp_mat [N][N];
     logic overflow;
 
-mat_addsub #(
-    .N(N),
-    .DATA_W(DATA_W)
-)
-    dut(
-    .sub(sub),
-    .mat_a(mat_a),
-    .mat_b(mat_b),
-    .mat_c(mat_c),
-    .overflow(overflow)
-);
+    logic signed [DATA_W-1:0] exp_mat [N][N];
+    logic exp_overflow;
 
-task automatic check_result(
+    int test_idx;
+    int i, j;
 
-    input string test_addsub,
-    input logic signed [DATA_W-1:0] exp_mat [N][N],
-    input logic exp_overflow
+    mat_addsub #(
+        .N(N),
+        .DATA_W(DATA_W)
+    ) dut (
+        .sub(sub),
+        .mat_a(mat_a),
+        .mat_b(mat_b),
+        .mat_c(mat_c),
+        .overflow(overflow)
+    );
 
-);
-int i,j;
-bit error_flag;
+    initial begin
+        $display("Started mat_addsub test");
 
-error_flag = 1'b0;
-for (i = 0; i < N; i++) begin
-    for (j = 0; j < N; j++) begin
-        if (mat_c[i][j] != exp_mat[i][j]) begin
-            error_flag = 1'b1;
+        repeat (TESTS) begin
+            do_random_test();
         end
+
+        $display("All mat_addsub tests finished");
+        $finish;
     end
-end
-if (overflow != exp_overflow) begin
-    error_flag = 1'b1;
-end
 
-if (error_flag) begin
-    $display("%s FAIL", test_addsub);
-end else begin
-    $display("%s PASS", test_addsub);
-end
+    task automatic do_random_test;
+        logic signed [DATA_W:0] tmp_res;
+        bit local_overflow;
 
-endtask
+        begin
+            sub = $urandom_range(0, 1);
 
-initial begin
+            for (i = 0; i < N; i++) begin
+                for (j = 0; j < N; j++) begin
+                    mat_a[i][j] = $signed($urandom());
+                    mat_b[i][j] = $signed($urandom());
+                end
+            end
 
-    mat_a[0][0] = 3;
-    mat_a[0][1] = -1;
-    mat_a[1][0] = 2;
-    mat_a[1][1] = -4;
+            #1;
 
-    mat_b[0][0] = 2;
-    mat_b[0][1] = 6;
-    mat_b[1][0] = -1;
-    mat_b[1][1] = 7;
+            local_overflow = 1'b0;
 
-    exp_mat[0][0] = 5;
-    exp_mat[0][1] = 5;
-    exp_mat[1][0] = 1;
-    exp_mat[1][1] = 3;
+            for (i = 0; i < N; i++) begin
+                for (j = 0; j < N; j++) begin
+                    if (sub) begin
+                        tmp_res = {mat_a[i][j][DATA_W-1], mat_a[i][j]} -
+                                  {mat_b[i][j][DATA_W-1], mat_b[i][j]};
+                    end else begin
+                        tmp_res = {mat_a[i][j][DATA_W-1], mat_a[i][j]} +
+                                  {mat_b[i][j][DATA_W-1], mat_b[i][j]};
+                    end
 
-    sub = 1'b0;
+                    exp_mat[i][j] = tmp_res[DATA_W-1:0];
 
-    #1;
-    
-    check_result("add_no_overflow", exp_mat, 1'b0);
+                    if (tmp_res[DATA_W] != tmp_res[DATA_W-1]) begin
+                        local_overflow = 1'b1;
+                    end
+                end
+            end
 
-    #1;
+            exp_overflow = local_overflow;
 
-    mat_a[0][0] = 7;
-    mat_a[0][1] = -3;
-    mat_a[1][0] = 5;
-    mat_a[1][1] = 2;
+            check_result();
+        end
+    endtask
 
-    mat_b[0][0] = 5;
-    mat_b[0][1] = 3;
-    mat_b[1][0] = -1;
-    mat_b[1][1] = -2;
+    task automatic check_result;
+        begin
+            for (i = 0; i < N; i++) begin
+                for (j = 0; j < N; j++) begin
+                    if (mat_c[i][j] !== exp_mat[i][j]) begin
+                        $error(
+                            "TEST %0d FAILED: sub=%0b, mat_c[%0d][%0d]=%0d, expected=%0d, a=%0d, b=%0d",
+                            test_idx, sub, i, j, mat_c[i][j], exp_mat[i][j], mat_a[i][j], mat_b[i][j]
+                        );
+                    end
+                end
+            end
 
-    exp_mat[0][0] = 2;
-    exp_mat[0][1] = -6;
-    exp_mat[1][0] = 6;
-    exp_mat[1][1] = 4;
+            if (overflow !== exp_overflow) begin
+                $error(
+                    "TEST %0d FAILED: overflow=%0b, expected_overflow=%0b, sub=%0b",
+                    test_idx, overflow, exp_overflow, sub
+                );
+            end
 
-    sub = 1'b1;
-
-    #1;
-    
-    check_result("minus_no_overflow", exp_mat, 1'b0);
-
-    #1;
-
-    mat_a[0][0] = 7;
-    mat_a[0][1] = 5;
-    mat_a[1][0] = 6;
-    mat_a[1][1] = 3;
-
-    mat_b[0][0] = -2;
-    mat_b[0][1] = -4;
-    mat_b[1][0] = -5;
-    mat_b[1][1] = -8;
-
-    exp_mat[0][0] = -7;
-    exp_mat[0][1] = -7;
-    exp_mat[1][0] = -5;
-    exp_mat[1][1] = -5;
-
-    sub = 1'b1;
-
-    #1;
-    
-    check_result("minus_with_overflow", exp_mat, 1'b1);
-
-    #1;
-
-    $finish;
-end
+            test_idx++;
+        end
+    endtask
 
 endmodule
